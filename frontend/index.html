@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Order Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>📦 Order Manager</h1>
+
+    <div class="form">
+        <input id="name" placeholder="Customer name">
+        <input id="item" placeholder="Item">
+        <input id="qty" type="number" placeholder="Quantity">
+
+        <button onclick="addOrder()">Add Order</button>
+    </div>
+
+    <h2>Orders</h2>
+
+    <button onclick="loadOrders()">Refresh</button>
+    <button onclick="downloadCSV()">Export CSV</button>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody id="ordersTable"></tbody>
+    </table>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
