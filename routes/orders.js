@@ -2,9 +2,19 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db");
 
-// CREATE order
+
+// ==========================
+// CREATE ORDER
+// ==========================
 router.post("/", async (req, res) => {
   const { customer_name, item, quantity } = req.body;
+
+  // basic validation (VERY IMPORTANT)
+  if (!customer_name || !item || !quantity) {
+    return res.status(400).json({
+      error: "customer_name, item, and quantity are required"
+    });
+  }
 
   try {
     const result = await db.query(
@@ -13,13 +23,20 @@ router.post("/", async (req, res) => {
     );
 
     res.json(result.rows[0]);
+
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Error creating order");
+    console.error("🔥 DATABASE ERROR (POST /orders):", err);
+
+    res.status(500).json({
+      error: err.message
+    });
   }
 });
 
-// GET all orders
+
+// ==========================
+// GET ALL ORDERS
+// ==========================
 router.get("/", async (req, res) => {
   try {
     const result = await db.query(
@@ -27,9 +44,13 @@ router.get("/", async (req, res) => {
     );
 
     res.json(result.rows);
+
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Error fetching orders");
+    console.error("🔥 DATABASE ERROR (GET /orders):", err);
+
+    res.status(500).json({
+      error: err.message
+    });
   }
 });
 
