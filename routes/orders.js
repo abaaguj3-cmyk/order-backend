@@ -55,3 +55,30 @@ router.get("/", async (req, res) => {
 });
 
 module.exports = router;
+
+router.get("/export/csv", async (req, res) => {
+  try {
+    const result = await db.query(
+      "SELECT * FROM orders ORDER BY created_at DESC"
+    );
+
+    const orders = result.rows;
+
+    // CSV header
+    let csv = "Customer Name,Item,Quantity,Created At\n";
+
+    // CSV rows
+    orders.forEach(order => {
+      csv += `${order.customer_name},${order.item},${order.quantity},${order.created_at}\n`;
+    });
+
+    res.header("Content-Type", "text/csv");
+    res.attachment("orders.csv");
+
+    res.send(csv);
+
+  } catch (err) {
+    console.error("EXPORT ERROR:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
