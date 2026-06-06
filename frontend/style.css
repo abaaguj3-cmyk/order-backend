@@ -1,23 +1,94 @@
 body {
-    font-family: Arial;
-    margin: 30px;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+    margin: 0;
 }
 
-.form {
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 30px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 10px;
     margin-bottom: 20px;
 }
 
-input {
-    margin: 5px;
-    padding: 8px;
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 6px;
+    border: none;
+}
+
+.item-row {
+    display: flex;
+    gap: 10px;
+}
+
+.item-row select {
+    flex: 3;
+}
+
+.item-row input {
+    flex: 1;
 }
 
 button {
-    padding: 8px 12px;
+    padding: 10px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #38bdf8;
     cursor: pointer;
 }
 
+button:hover {
+    background: #0ea5e9;
+}
+
 table {
-    margin-top: 20px;
     width: 100%;
+    border-collapse: collapse;
+    background: #1e293b;
+}
+
+th,
+td {
+    padding: 10px;
+    border-bottom: 1px solid #334155;
+    text-align: left;
+}
+
+/* MODAL */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.hidden {
+    display: none;
 }

@@ -1,71 +1,58 @@
 const API_URL = "https://order-backend-krh9.onrender.com/orders";
 
-// ======================
-// ADD ORDER
-// ======================
-async function addOrder() {
-  try {
+let pendingOrder = null;
+
+function previewOrder() {
     const name = document.getElementById("name").value;
-    const item = document.getElementById("item").value;
-    const qty = document.getElementById("qty").value;
+    const location = document.getElementById("location").value;
 
-    await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
+    const item1 = document.getElementById("item1").value;
+    const qty1 = document.getElementById("qty1").value;
+
+    const item2 = document.getElementById("item2").value;
+    const qty2 = document.getElementById("qty2").value;
+
+    if (!name || !location) {
+        alert("Please fill name and location");
+        return;
+    }
+
+    pendingOrder = {
         customer_name: name,
-        item: item,
-        quantity: Number(qty)
-      })
+        location: location,
+        items: [
+            item1 && { item: item1, quantity: Number(qty1) },
+            item2 && { item: item2, quantity: Number(qty2) }
+        ].filter(Boolean)
+    };
+
+    document.getElementById("preview").innerHTML = `
+        <p><b>Name:</b> ${name}</p>
+        <p><b>Location:</b> ${location}</p>
+        <p><b>Items:</b></p>
+        <ul>
+            ${pendingOrder.items.map(i =>
+                `<li>${i.item} - ${i.quantity}</li>`
+            ).join("")}
+        </ul>
+    `;
+
+    document.getElementById("modal").classList.remove("hidden");
+}
+
+function closeModal() {
+    document.getElementById("modal").classList.add("hidden");
+}
+
+async function submitOrder() {
+    await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(pendingOrder)
     });
 
-    loadOrders();
+    alert("Order submitted!");
+    closeModal();
 
-  } catch (err) {
-    console.error("ADD ERROR:", err);
-  }
+    location.reload();
 }
-
-// ======================
-// LOAD ORDERS
-// ======================
-async function loadOrders() {
-  try {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-
-    const table = document.getElementById("ordersTable");
-    table.innerHTML = "";
-
-    data.forEach(order => {
-      table.innerHTML += `
-        <tr>
-          <td>${order.customer_name}</td>
-          <td>${order.item}</td>
-          <td>${order.quantity}</td>
-          <td>${new Date(order.created_at).toLocaleString()}</td>
-        </tr>
-      `;
-    });
-
-  } catch (err) {
-    console.error("LOAD ERROR:", err);
-  }
-}
-
-// ======================
-// EXPORT CSV (FIXED)
-// ======================
-function downloadCSV() {
-  window.open(
-    "https://order-backend-krh9.onrender.com/orders/export/csv",
-    "_blank"
-  );
-}
-
-// ======================
-// AUTO LOAD
-// ======================
-loadOrders();

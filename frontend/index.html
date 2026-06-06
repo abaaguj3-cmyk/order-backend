@@ -2,39 +2,65 @@
 <html>
 
 <head>
-    <title>Order Manager</title>
+    <title>Menu Order</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1>📦 Order Manager</h1>
+    <div class="container">
 
-    <div class="form">
-        <input id="name" placeholder="Customer name">
-        <input id="item" placeholder="Item">
-        <input id="qty" type="number" placeholder="Quantity">
+        <h1>🍽️ Place Your Order</h1>
 
-        <button onclick="addOrder()">Add Order</button>
+        <div class="card">
+
+            <input id="name" placeholder="Customer Name">
+            <input id="location" placeholder="Location">
+
+            <div class="item-row">
+                <select id="item1">
+                    <option value="">Select Item 1</option>
+                    <option value="Jollof Rice (Main)">Jollof Rice (Main)</option>
+                    <option value="Fried Rice (Main)">Fried Rice (Main)</option>
+                    <option value="Chicken (Main)">Chicken (Main)</option>
+                    <option value="Spring Rolls (Appetizer)">Spring Rolls (Appetizer)</option>
+                    <option value="Chapman (Drink)">Chapman (Drink)</option>
+                    <option value="Coke (Drink)">Coke (Drink)</option>
+                </select>
+
+                <input id="qty1" type="number" placeholder="Qty">
+            </div>
+
+            <div class="item-row">
+                <select id="item2">
+                    <option value="">Select Item 2</option>
+                    <option value="Jollof Rice (Main)">Jollof Rice (Main)</option>
+                    <option value="Fried Rice (Main)">Fried Rice (Main)</option>
+                    <option value="Chicken (Main)">Chicken (Main)</option>
+                    <option value="Spring Rolls (Appetizer)">Spring Rolls (Appetizer)</option>
+                    <option value="Chapman (Drink)">Chapman (Drink)</option>
+                    <option value="Coke (Drink)">Coke (Drink)</option>
+                </select>
+
+                <input id="qty2" type="number" placeholder="Qty">
+            </div>
+
+            <button onclick="previewOrder()">Add Order</button>
+
+        </div>
+
     </div>
 
-    <h2>Orders</h2>
+    <!-- CONFIRM MODAL -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Confirm Order</h2>
+            <div id="preview"></div>
 
-    <button onclick="loadOrders()">Refresh</button>
-    <button onclick="downloadCSV()">Export CSV</button>
-
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Item</th>
-                <th>Qty</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-
-        <tbody id="ordersTable"></tbody>
-    </table>
+            <button onclick="submitOrder()">Confirm</button>
+            <button onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>

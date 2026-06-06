@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>📊 Admin Dashboard</h1>
+
+        <div class="card">
+
+            <input id="filterName" placeholder="Filter by name">
+            <input id="filterLocation" placeholder="Filter by location">
+            <input id="filterDate" type="date">
+
+            <button onclick="loadOrders()">Refresh</button>
+            <button onclick="exportCSV()">Export CSV</button>
+
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Items</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody id="ordersTable"></tbody>
+        </table>
+
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+
+</html>
