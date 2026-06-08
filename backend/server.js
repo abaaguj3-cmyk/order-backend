@@ -11,7 +11,8 @@ app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
-const orderRoutes = require("./routes/orders");
+// FIXED PATH
+const orderRoutes = require("./routes/order");
 app.use("/orders", orderRoutes);
 
 const PORT = process.env.PORT || 5000;
