@@ -1,64 +1,66 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../db");
+const db = require("../db");
 
-/* ---------------- CREATE ---------------- */
+// CREATE ORDER
 router.post("/", async (req, res) => {
-  try {
-    const { customer_name, location, items } = req.body;
+  const { customer_name, item, quantity, location } = req.body;
 
-    const result = await pool.query(
-      "INSERT INTO orders (customer_name, location, items, created_at) VALUES ($1,$2,$3,NOW()) RETURNING *",
-      [customer_name, location, JSON.stringify(items)]
+  if (!customer_name || !item || !quantity) {
+    return res.status(400).json({
+      error: "customer_name, item, and quantity are required"
+    });
+  }
+
+  try {
+    const result = await db.query(
+      `INSERT INTO orders (customer_name, item, quantity, location)
+       VALUES ($1, $2, $3, $4)
+       RETURNING *`,
+      [customer_name, item, quantity, location || null]
     );
 
     res.json(result.rows[0]);
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: err.message });
   }
 });
 
-/* ---------------- READ ---------------- */
+// GET ALL ORDERS
 router.get("/", async (req, res) => {
   try {
-    const result = await pool.query(
+    const result = await db.query(
       "SELECT * FROM orders ORDER BY created_at DESC"
     );
 
     res.json(result.rows);
+
   } catch (err) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: err.message });
   }
 });
 
-/* ---------------- DELETE ---------------- */
-router.delete("/:id", async (req, res) => {
+// EXPORT CSV
+router.get("/export/csv", async (req, res) => {
   try {
-    await pool.query("DELETE FROM orders WHERE id=$1", [req.params.id]);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-/* ---------------- EDIT ORDER ---------------- */
-router.put("/:id", async (req, res) => {
-  try {
-    const { customer_name, location, items } = req.body;
-
-    const result = await pool.query(
-      `UPDATE orders 
-       SET customer_name=$1, location=$2, items=$3
-       WHERE id=$4
-       RETURNING *`,
-      [customer_name, location, JSON.stringify(items), req.params.id]
+    const result = await db.query(
+      "SELECT * FROM orders ORDER BY created_at DESC"
     );
 
-    res.json(result.rows[0]);
+    let csv = "Customer Name,Item,Quantity,Location,Created At\n";
+
+    result.rows.forEach(order => {
+      csv += `${order.customer_name},${order.item},${order.quantity},${order.location || ""},${order.created_at}\n`;
+    });
+
+    res.header("Content-Type", "text/csv");
+    res.attachment("orders.csv");
+    res.send(csv);
+
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: err.message });
   }
 });
 

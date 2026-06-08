@@ -6,34 +6,39 @@ function previewOrder() {
     const name = document.getElementById("name").value;
     const location = document.getElementById("location").value;
 
-    const item1 = document.getElementById("item1").value;
-    const qty1 = document.getElementById("qty1").value;
-
-    const item2 = document.getElementById("item2").value;
-    const qty2 = document.getElementById("qty2").value;
-
     if (!name || !location) {
-        alert("Please fill name and location");
+        alert("Name and location required");
         return;
     }
 
-    pendingOrder = {
-        customer_name: name,
-        location: location,
-        items: [
-            item1 && { item: item1, quantity: Number(qty1) },
-            item2 && { item: item2, quantity: Number(qty2) }
-        ].filter(Boolean)
-    };
+    const items = [];
+
+    const appetizer = document.getElementById("appetizer").value;
+    const appetizerQty = document.getElementById("appetizerQty").value;
+
+    const main = document.getElementById("main").value;
+    const mainQty = document.getElementById("mainQty").value;
+
+    const drink = document.getElementById("drink").value;
+    const drinkQty = document.getElementById("drinkQty").value;
+
+    if (appetizer) items.push({ category: "appetizer", name: appetizer, qty: Number(appetizerQty) || 1 });
+    if (main) items.push({ category: "main", name: main, qty: Number(mainQty) || 1 });
+    if (drink) items.push({ category: "drink", name: drink, qty: Number(drinkQty) || 1 });
+
+    if (items.length === 0) {
+        alert("Please select at least one item");
+        return;
+    }
+
+    pendingOrder = { customer_name: name, location, items };
 
     document.getElementById("preview").innerHTML = `
         <p><b>Name:</b> ${name}</p>
         <p><b>Location:</b> ${location}</p>
         <p><b>Items:</b></p>
         <ul>
-            ${pendingOrder.items.map(i =>
-                `<li>${i.item} - ${i.quantity}</li>`
-            ).join("")}
+            ${items.map(i => `<li>${i.category}: ${i.name} x${i.qty}</li>`).join("")}
         </ul>
     `;
 
@@ -45,14 +50,24 @@ function closeModal() {
 }
 
 async function submitOrder() {
-    await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(pendingOrder)
-    });
+    try {
+        const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(pendingOrder)
+        });
 
-    alert("Order submitted!");
-    closeModal();
+        const data = await res.json();
 
-    location.reload();
+        if (!res.ok) {
+            throw new Error(data.error || "Failed");
+        }
+
+        alert("Order submitted successfully!");
+        closeModal();
+        location.reload();
+
+    } catch (err) {
+        alert("Error: " + err.message);
+    }
 }

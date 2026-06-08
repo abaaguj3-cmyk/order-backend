@@ -8,35 +8,33 @@
 
 <body>
 
-    <div class="container">
+    <h1>📊 Admin Dashboard</h1>
 
-        <h1>📊 Admin Dashboard</h1>
-
-        <div class="card">
-
-            <input id="filterName" placeholder="Filter by name">
-            <input id="filterLocation" placeholder="Filter by location">
-            <input id="filterDate" type="date">
-
-            <button onclick="loadOrders()">Refresh</button>
-            <button onclick="exportCSV()">Export CSV</button>
-
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Location</th>
-                    <th>Items</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-
-            <tbody id="ordersTable"></tbody>
-        </table>
-
+    <div class="admin-controls">
+        <button onclick="loadOrders()">🔄 Refresh</button>
+        <button onclick="exportCSV()">⬇️ Export CSV</button>
     </div>
+
+    <div class="filters">
+        <input id="filterName" placeholder="Filter by customer name">
+        <input id="filterLocation" placeholder="Filter by location">
+        <input id="filterDate" type="date">
+        <button onclick="loadOrders()">Apply Filters</button>
+    </div>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Location</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody id="ordersTable"></tbody>
+    </table>
 
     <script src="admin.js"></script>
 </body>

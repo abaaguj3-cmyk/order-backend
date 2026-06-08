@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Menu Order</title>
+    <title>Order Menu</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -17,33 +17,31 @@
             <input id="name" placeholder="Customer Name">
             <input id="location" placeholder="Location">
 
-            <div class="item-row">
-                <select id="item1">
-                    <option value="">Select Item 1</option>
-                    <option value="Jollof Rice (Main)">Jollof Rice (Main)</option>
-                    <option value="Fried Rice (Main)">Fried Rice (Main)</option>
-                    <option value="Chicken (Main)">Chicken (Main)</option>
-                    <option value="Spring Rolls (Appetizer)">Spring Rolls (Appetizer)</option>
-                    <option value="Chapman (Drink)">Chapman (Drink)</option>
-                    <option value="Coke (Drink)">Coke (Drink)</option>
-                </select>
+            <h3>Appetizers</h3>
+            <select id="appetizer">
+                <option value="">Select appetizer</option>
+                <option value="Spring Rolls">Spring Rolls</option>
+                <option value="Samosa">Samosa</option>
+            </select>
+            <input id="appetizerQty" type="number" placeholder="Qty">
 
-                <input id="qty1" type="number" placeholder="Qty">
-            </div>
+            <h3>Main Meals</h3>
+            <select id="main">
+                <option value="">Select main meal</option>
+                <option value="Jollof Rice">Jollof Rice</option>
+                <option value="Fried Rice">Fried Rice</option>
+                <option value="Chicken">Chicken</option>
+            </select>
+            <input id="mainQty" type="number" placeholder="Qty">
 
-            <div class="item-row">
-                <select id="item2">
-                    <option value="">Select Item 2</option>
-                    <option value="Jollof Rice (Main)">Jollof Rice (Main)</option>
-                    <option value="Fried Rice (Main)">Fried Rice (Main)</option>
-                    <option value="Chicken (Main)">Chicken (Main)</option>
-                    <option value="Spring Rolls (Appetizer)">Spring Rolls (Appetizer)</option>
-                    <option value="Chapman (Drink)">Chapman (Drink)</option>
-                    <option value="Coke (Drink)">Coke (Drink)</option>
-                </select>
-
-                <input id="qty2" type="number" placeholder="Qty">
-            </div>
+            <h3>Drinks</h3>
+            <select id="drink">
+                <option value="">Select drink</option>
+                <option value="Fanta">Fanta</option>
+                <option value="Coke">Coke</option>
+                <option value="Chapman">Chapman</option>
+            </select>
+            <input id="drinkQty" type="number" placeholder="Qty">
 
             <button onclick="previewOrder()">Add Order</button>
 
@@ -51,10 +49,12 @@
 
     </div>
 
-    <!-- CONFIRM MODAL -->
+
+    <!-- MODAL -->
     <div id="modal" class="modal hidden">
         <div class="modal-content">
             <h2>Confirm Order</h2>
+
             <div id="preview"></div>
 
             <button onclick="submitOrder()">Confirm</button>
